@@ -1,0 +1,73 @@
+#%RAML 1.0
+title: The Herd API
+baseUri: http://localhost:8081/api
+version: 1.0
+
+uses:
+  assets: assets.lib.raml
+
+  annotationTypes:
+  monitoringInterval:
+    type: integer
+
+    /vaccinated: 
+        /{location}:
+            displayName: Vaccine Location
+            get:
+                description: Outputs a running list of locations users have received vaccines alongside a user count.
+                queryParameters:
+                    access_token:
+
+
+    /vaccinated:
+        /{date}:
+            displayName: Vaccine Date
+            get:
+                description: Outputs a running list of dates users have received vaccines alongside a user count. 
+                queryParameters:
+                    access_token: 
+
+
+    /vaccinetype:
+        displayName: Vaccine Type 
+        get:
+            description:  Outputs a running list of vaccine types users have received alongside a user count.
+            queryParameters:
+                access_token: 
+
+
+    /vaccinetype:
+      /symptoms:
+        displayName: Reported Symptoms 
+        get:
+            description: Outputs a running list of user-reported symptoms alongside the vaccine user(s) received.
+            queryParameters:
+                access_token: 
+        post:
+            description: Allows the user to report their symptoms and to specify the vaccine type they received.
+            queryParameters:
+                access_token: 
+                vaccine_type: 
+                symptoms:  
+
+
+/orders:
+  displayName: Orders
+  get:
+    is: [ assets.paging ]
+    (monitoringInterval): 30
+    description: Lists all orders of a specific user
+    queryParameters:
+      userId:
+        type: string
+        description: use to query all orders of a user
+  post:
+  /{orderId}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              type: assets.Order
+            application/xml:
+              type: !include schemas/order.xsd
