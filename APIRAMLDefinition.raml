@@ -1,0 +1,103 @@
+#%RAML 1.0
+title: The Herd API
+baseUri: http://localhost:8081/api
+version: 1.0
+
+uses:
+  assets: assets.lib.raml
+
+annotationTypes:
+  monitoringInterval:
+    type: integer
+
+/vaccinestats:
+  /accesstoken: 
+    post: 
+    displayName: Access Token
+    is: 
+    (monitoringInterval): 30
+    description: Provides the client with an access token for future API calls. 
+    queryParameters: 
+        full name:
+        purpose: 
+        get: 
+            responses:
+                200:
+                 body:
+                    application/json:
+                        output: 
+                            {
+                                "scope": "scope",
+                                "access_token": "Access-Token",
+                                "token_type": "Bearer",
+                                "app_id": "APP-80W284485P519543T",
+                                "expires_in": 31349,
+                                "nonce": "nonce"
+                            },
+                            "success": true,
+                            "status": 200
+                        }
+                        
+
+  /vaccinated: 
+    displayName: Vaccinated
+
+    get:
+        is: 
+        (monitoringInterval): 30
+        description: Outputs the total number of vaccinated people according to voluntary user input. 
+        queryParameters: 
+            access_token: 
+                get: 
+                    responses:
+                        200:
+                            body:
+                                application/json:
+                                    output: 
+                                        {
+                                            "scope": "scope",
+                                            "access_token": "Access-Token",
+                                            "token_type": "Bearer",
+                                            "app_id": "APP-80W284485P519543T",
+                                            "expires_in": 31349,
+                                            "nonce": "nonce"
+                                        },
+                                        "success": true,
+                                        "status": 200
+                                    }
+
+    post: 
+        description: Adds a randomly generated ID to the database to count another person as vaccinated.
+        queryParameters:
+            access_token:
+                body:
+                    application/json:
+                        type: |
+                        {
+                            "type": "object",
+                            "required": true,
+                            "properties": {
+                                "location": {
+                                    "required": true,
+                                    "type": "string"
+                                },
+                                "date": {
+                                    "required": true,
+                                    "type": "string",
+                                    "minLength": 6,
+                                    "maxLength": 8
+                                },
+                                "vaccine_type": "string",
+                                    "required": true,
+                                    "minLength": 36,
+                                    "maxLength": 36
+                                }
+                            }
+                        }
+                        example: |
+                        {
+                            "location": "Wilson County, NC",
+                            "date": "5/4/21",
+                            "vaccine_type": "Moderna"
+                        } 
+
