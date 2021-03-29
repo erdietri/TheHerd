@@ -12,3 +12,7 @@ The workspace contains two folders by default, where:
 ## Dependency Management
 
 The `JAVA DEPENDENCIES` view allows you to manage your dependencies. More details can be found [here](https://github.com/microsoft/vscode-java-pack/blob/master/release-notes/v0.9.0.md#work-with-jar-files-directly).
+
+# TheHerd
+A model-driven REST API and application for tracking COVID-19 vaccinations and symptoms.
+
