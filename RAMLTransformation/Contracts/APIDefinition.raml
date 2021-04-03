@@ -1,0 +1,173 @@
+#%RAML 1.0
+title: The Herd
+baseUri: http://localhost:8081/theherd
+version: 1.0
+types: 
+  SuccessfulResponse:
+    displayName: Successful response
+    type: object
+    properties:
+      location:
+        required: true
+        displayName: location
+        type: string
+      vaccine_type:
+        required: true
+        displayName: vaccine type
+        type: string
+      date: 
+        required: true
+        displayName: date
+        type: string
+      access_token: 
+        required: true
+        displayName: access token
+        type: string
+      fullName:
+        required: true
+        displayName: full name
+        type: string 
+      purpose: 
+        required: true
+        displayName: purpose
+        type: string
+      symptoms: 
+        required: false
+        displayName: symptoms
+        type: string
+          
+/vaccinestats:
+  /accesstoken:
+    post:
+      description: Provides the client with an access token for future API calls.
+      queryParameters:  
+        fullName: 
+          displayName: Full Name, 
+          required: true
+      responses:
+        200:
+          body:
+            application/json:
+              example: | 
+                {
+                  "scope": "scope",
+                  "access_token": "Access-Token",
+                  "token_type": "Bearer",
+                  "app_id": "APP-80W284485P519543T",
+                  "expires_in": 31349,
+                  "nonce": "nonce"
+                }
+
+  /vaccinated: 
+    get:
+        description: Outputs the total number of vaccinated people according to voluntary user input.  
+        queryParameters:
+          access_token:
+            type: string
+            required: true
+        responses:
+              200:
+                body:
+                  application/json:
+                    example: |
+                      {
+                        "total people vaccinated": "total"
+                      }
+
+    post: 
+      description: Adds a randomly generated ID to the database to count another person as vaccinated.
+      queryParameters:
+        access_token:
+        location: 
+        date:
+        vaccine_type: 
+      responses:
+        200:
+          body: 
+            application/json: 
+              example: |
+                {
+                  "message": "Thank you for submitting your vaccination information!"
+                }
+    
+    /{location}:
+            displayName: Vaccine Location
+            get:
+                description: Outputs a running list of locations users have received vaccines alongside a user count.
+                queryParameters:
+                    access_token: string
+                responses:
+                  200:
+                    body: 
+                      application/json: 
+                        example: |
+                          {
+                            "location": "Wilson County, NC",
+                            "total": "45"
+                          }
+
+    /{date}:
+            displayName: Vaccine Date
+            get:
+                description: Outputs a running list of dates users have received vaccines alongside a user count. 
+                queryParameters:
+                    access_token: string
+                responses:
+                  200:
+                    body: 
+                      application/json: 
+                        example: |
+                          {
+                             "date": "3/11/21",
+                             "total": "873"
+                           }
+
+    /{vaccinetype}:
+          displayName: Vaccine Type 
+          get:
+              description:  Outputs a running list of vaccine types users have received alongside a user count.
+              queryParameters:
+                  access_token:
+              responses:
+                200:
+                  body: 
+                    application/json: 
+                      example: |
+                        {
+                          "vaccine type": "moderna",
+                          "total": "5132"
+                        } 
+
+    /symptoms: 
+        displayName: Reported Symptoms 
+        get:
+            description: Outputs a running list of user-reported symptoms alongside the vaccine user(s) received.
+            queryParameters:
+                access_token: string
+            responses:
+              200:
+                body: 
+                  application/json: 
+                    example: |
+                      {
+                        "vaccine type": "moderna",
+                        "symptoms": "fever, headache, stiffness"
+                      }
+                
+                
+        /{vaccinetype}:
+          post:
+            description: Allows the user to report their symptoms and to specify the vaccine type they received.
+            queryParameters:
+              access_token: 
+              vaccine_type: 
+              symptoms: 
+            responses:
+              200:
+                body: 
+                  application/json: 
+                    example: |
+                      {
+                        "vaccine type": "moderna",
+                        "symptoms": "fever, headache, stiffness"
+                      }

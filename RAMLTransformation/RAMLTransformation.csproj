@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="RAML.NetCore.APICore" Version="0.2.0" />
+    <PackageReference Include="RestEase" Version="1.4.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Contracts\includes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Contracts\APIDefinition.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>APIDefinition.raml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Contracts\APIDefinition.raml">
+      <Generator>RestEaseCodeGenerator</Generator>
+      <LastGenOutput>APIDefinition.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+</Project>
